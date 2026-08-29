@@ -42,7 +42,7 @@ export interface SessionSourceDescriptor {
 
 /** 会话:一次 Agent 会话的元数据 */
 export interface Session {
-  /** 业务标识 = `${source}:${rawId}`;本阶段不做唯一性约束(阶段 2 存储层管唯一) */
+  /** 业务标识 = `${source}:${rawId}`;阶段 2 存储层以它为主键(先到先得) */
   sessionKey: string;
   rawId: string;
   source: SessionSource;
@@ -53,6 +53,10 @@ export interface Session {
   /** 会话时间,归一后的毫秒 */
   timestamp: number;
   messageCount: number;
+  /** 文件字节数:增量判定锚点之一(阶段 2;由唯一 fs 模块 loader 提供) */
+  fileSize: number;
+  /** 文件修改时间毫秒:增量判定锚点之二 */
+  fileMtimeMs: number;
 }
 
 /** 会话消息:最小字段集 = 角色/内容/时间(毫秒) */
@@ -82,6 +86,8 @@ export interface SourceLoadStats {
 /** 加载统计:每个启用来源一条(注册表顺序,无文件也计 0) */
 export interface LoadStats {
   perSource: SourceLoadStats[];
+  /** 单文件读取/解析异常(路径 + 消息);出现时不中断整批(阶段 2 FR-007) */
+  errors: string[];
 }
 
 /** 加载选项:sources 未传时默认仅启用 optionalSetting === null 的来源(澄清结论) */
@@ -106,4 +112,33 @@ export interface ParsedFile {
   timestamp: number;
   messages: SessionMessage[];
   badLineCount: number;
+}
+
+/** 同步统计:全部计数显式输出,禁止静默丢弃(FR-006) */
+export interface IndexStatus {
+  /** 本次重新入库的会话数(文件已变或 forceReindex 命中) */
+  indexed: number;
+  /** 快照未变被跳过的会话数(未重新解析) */
+  skipped: number;
+  /** 磁盘文件已删除而被清理的库内记录数 */
+  removed: number;
+  /** 同键冲突被「先到先得」跳过的会话数 */
+  conflicts: number;
+  total: number;
+  lastIndexedAt: number;
+  /** 单文件异常(路径 + 消息);出现时不中断整批 */
+  errors: string[];
+}
+
+/** 同步选项:forceReindex 命中的来源无视快照判定强制重建(增量漏检的兜底通道) */
+export interface SyncOptions {
+  rootDir: string;
+  sources?: SessionSource[];
+  forceReindex?: (source: SessionSource) => boolean;
+}
+
+/** 全文检索命中:会话键 + 带标记的上下文片段(bm25 相关度排序) */
+export interface SearchHit {
+  sessionKey: string;
+  snippet: string;
 }
