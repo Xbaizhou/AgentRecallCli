@@ -2,6 +2,7 @@
 // 关键词(FTS5 倒排)与结构化条件(SQL)两路在内存求交:候选集量级可控,换取实现直观与排序统一(研究 R1)。
 import type { DatabaseSync } from "node:sqlite";
 import { performance } from "node:perf_hooks";
+import { ftsQuery } from "./store/fts.js";
 
 export interface SearchFilters {
   query?: string;
@@ -47,34 +48,12 @@ interface SessionRow {
   message_count: number;
 }
 
-/** 关键词候选:每键取最小 bm25(最相关),并保留首条命中片段用于渲染 */
+/** 关键词候选:委托 ftsQuery(关键词语义唯一出处:≥3 字符走 trigram,短词 LIKE 兜底) */
 function ftsCandidates(
   db: DatabaseSync,
   query: string,
 ): { keys: Set<string>; bestRank: Map<string, number>; snippet: Map<string, string> } {
-  const matchQuery = `"${query.replaceAll('"', '""')}"`;
-  // bm25 是 FTS5 辅助函数,不能包进 SQL 聚合——逐行取回后在此聚合(每键取最小 rank)
-  const rows = db
-    .prepare(
-      `SELECT m.session_key AS session_key, bm25(messages_fts) AS rank,
-              snippet(messages_fts, 0, '[', ']', '…', 12) AS snippet
-       FROM messages_fts JOIN messages m ON m.rowid = messages_fts.rowid
-       WHERE messages_fts MATCH ?`,
-    )
-    .all(matchQuery) as Array<{ session_key: string; rank: number; snippet: string }>;
-
-  const keys = new Set<string>();
-  const bestRank = new Map<string, number>();
-  const snippet = new Map<string, string>();
-  for (const r of rows) {
-    keys.add(r.session_key);
-    const prev = bestRank.get(r.session_key);
-    if (prev === undefined || r.rank < prev) {
-      bestRank.set(r.session_key, r.rank);
-      snippet.set(r.session_key, r.snippet); // 最相关行的片段
-    }
-  }
-  return { keys, bestRank, snippet };
+  return ftsQuery(db, query);
 }
 
 export function searchSessions(db: DatabaseSync, filters: SearchFilters): SearchResponse {

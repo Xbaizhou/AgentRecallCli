@@ -70,8 +70,13 @@ describe("searchContent", () => {
     expect(searchContent(db, "重排序").map((h) => h.sessionKey)).toContain("claude-cli:a");
   });
 
-  it("limit 生效", () => {
+  it("limit 生效(按会话去重后的命中数截断)", () => {
     seed("claude-cli:c", "/r/claude/c.jsonl", ["关键词命中一", "关键词命中二", "关键词命中三"]);
+    // 同一会话 3 条命中 → 去重后 1 个键
+    expect(searchContent(db, "关键词命中", 2)).toHaveLength(1);
+    // 跨会话:每会话 1 键 → limit 截断生效
+    seed("claude-cli:d", "/r/claude/d.jsonl", ["关键词命中四"]);
     expect(searchContent(db, "关键词命中", 2)).toHaveLength(2);
+    expect(searchContent(db, "关键词命中", 1)).toHaveLength(1);
   });
 });
