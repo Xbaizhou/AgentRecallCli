@@ -1,0 +1,102 @@
+// 会话加载器测试:目录遍历、组装与统计契约。文件系统一律 mkdtemp 临时目录,绝不触碰真实会话目录(宪法 VI)。
+import { mkdtemp, writeFile, mkdir } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, describe, expect, it } from "vitest";
+import { FORMAT_ADAPTERS } from "./format-adapters.js";
+import { loadSessions } from "./session-loader.js";
+
+const tmpRoots: string[] = [];
+
+async function makeTmpRoot(): Promise<string> {
+  const dir = await mkdtemp(join(tmpdir(), "mini-recall-"));
+  tmpRoots.push(dir);
+  return dir;
+}
+
+// 测试结束后清理临时目录(WAL 约定同样适用于 tmp:用完即收)
+afterEach(async () => {
+  const { rm } = await import("node:fs/promises");
+  for (const dir of tmpRoots.splice(0)) {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+const CLAUDE_LINE =
+  '{"type":"user","sessionId":"s-1","cwd":"/p","timestamp":"2026-08-01T10:00:00.000Z","message":{"role":"user","content":"问题"}}';
+
+describe("loadSessions:加载、组装与统计(US1)", () => {
+  it("遍历多来源目录并组装 LoadedSession 与统计", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "claude"), { recursive: true });
+    await mkdir(join(root, "codex"), { recursive: true });
+    await writeFile(join(root, "claude", "a.jsonl"), CLAUDE_LINE, "utf8");
+    await writeFile(
+      join(root, "codex", "rollout-x.jsonl"),
+      '{"type":"session_meta","session_id":"roll-1","cwd":"/c","timestamp":1754035200000}\n',
+      "utf8",
+    );
+
+    const { sessions, stats } = await loadSessions({ rootDir: root });
+    expect(sessions).toHaveLength(2);
+    const claudeSession = sessions.find((s) => s.session.source === "claude-cli")!;
+    expect(claudeSession.session.sessionKey).toBe("claude-cli:s-1");
+    expect(claudeSession.session.messageCount).toBe(1);
+    expect(claudeSession.messages[0].content).toBe("问题");
+
+    expect(stats.perSource.map((s) => s.source)).toEqual(["claude-cli", "codex"]);
+    const claudeStats = stats.perSource.find((s) => s.source === "claude-cli")!;
+    expect(claudeStats).toEqual({ source: "claude-cli", sessionCount: 1, messageCount: 1, skippedBadLines: 0 });
+  });
+
+  it("无文件的启用来源统计计 0,目录不存在不抛错", async () => {
+    const root = await makeTmpRoot();
+    const { sessions, stats } = await loadSessions({ rootDir: root });
+    expect(sessions).toHaveLength(0);
+    expect(stats.perSource.map((s) => s.source)).toEqual(["claude-cli", "codex"]);
+    expect(stats.perSource.every((s) => s.sessionCount === 0 && s.messageCount === 0 && s.skippedBadLines === 0)).toBe(true);
+  });
+
+  it("相同输入两次加载结果完全一致(确定性,SC-006)", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "claude"), { recursive: true });
+    await writeFile(join(root, "claude", "a.jsonl"), CLAUDE_LINE, "utf8");
+    const first = await loadSessions({ rootDir: root });
+    const second = await loadSessions({ rootDir: root });
+    expect(JSON.stringify(first)).toBe(JSON.stringify(second));
+  });
+
+  it("递归遍历子目录,并按 filePattern 过滤文件", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "codex", "2026", "08", "01"), { recursive: true });
+    await writeFile(join(root, "codex", "2026", "08", "01", "rollout-deep.jsonl"), CLAUDE_LINE, "utf8");
+    await writeFile(join(root, "codex", "2026", "08", "01", "not-a-rollout.jsonl"), CLAUDE_LINE, "utf8");
+    const { sessions } = await loadSessions({ rootDir: root, sources: ["codex"] });
+    // codex 的 filePattern 只认 rollout-*.jsonl:深层目录能找到,不匹配的文件被排除
+    expect(sessions).toHaveLength(1);
+    expect(sessions[0].session.filePath).toContain("rollout-deep.jsonl");
+  });
+});
+
+describe("【验收演示】fixtures → LoadedSession[] 统计(计划 1.4,任务 T011)", () => {
+  // 只读加载仓库内合成 fixtures,打印统计表。断言保持宽松(会话数>0),
+  // 精确计数断言由上方 mkdtemp 用例负责——后续阶段补充 fixtures 不会破坏演示。
+  it("加载仓库 fixtures 并输出每个来源的会话数/消息数/坏行数", async () => {
+    const fixturesDir = join(import.meta.dirname, "..", "..", "fixtures");
+    const { sessions, stats } = await loadSessions({ rootDir: fixturesDir });
+
+    expect(sessions.length).toBeGreaterThan(0);
+    expect(stats.perSource.map((s) => s.source)).toEqual(["claude-cli", "codex"]);
+    expect(stats.perSource.find((s) => s.source === "claude-cli")!.sessionCount).toBeGreaterThan(0);
+    expect(stats.perSource.find((s) => s.source === "codex")!.sessionCount).toBeGreaterThan(0);
+
+    console.log("\n===== mini-recall 阶段 1 验收演示:fixtures → LoadedSession[] =====");
+    console.log("来源            会话数   消息数   坏行数");
+    for (const s of stats.perSource) {
+      console.log(
+        `${s.source.padEnd(14)} ${String(s.sessionCount).padStart(5)} ${String(s.messageCount).padStart(8)} ${String(s.skippedBadLines).padStart(6)}`,
+      );
+    }
+    console.log(`合计会话: ${sessions.length}\n`);
+  });
+});
