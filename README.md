@@ -2,7 +2,7 @@
 
 > AgentRecall v1 的复现式学习仓库:领域内核(Node + TypeScript + SQLite,不含 Electron UI)+ 会话检索 Agent(ReAct)+ MCP 对外暴露 + 评测闭环。
 
-## 进度:阶段 0–5 已完成,阶段 6(评测闭环)进行中
+## 进度:阶段 0–6 全部完成 ✅
 
 | 阶段 | 内容 | 状态 |
 | --- | --- | --- |
@@ -12,7 +12,7 @@
 | 3 | 查询服务 + zod 契约层 + CLI REPL | ✅ |
 | 4 | Agent 决策循环(ReAct+工具+改写+反思) | ✅ |
 | 5 | MCP 化(STDIO server + 零依赖 bundle) | ✅ |
-| 6 | 评测闭环 + PROJECT-RECAP | 进行中 |
+| 6 | 评测闭环 + PROJECT-RECAP | ✅ |
 
 ## 目录
 
@@ -54,4 +54,4 @@ server 通过 `~/.mini-recall/db-path` 指针定位库(REPL 首次运行时写�
 
 ## 阶段路线
 
-阶段 0 跑通原版 → 阶段 1 领域内核 → 阶段 2 存储与增量索引 → 阶段 3 查询服务+契约层+CLI → 阶段 4 Agent 决策循环 → 阶段 5 MCP 化 → **阶段 6 评测闭环**。学习计划见 `docs/mini_agent_lab/AgentRecall复现式学习计划.md`。
+阶段 0 跑通原版 → 阶段 1 领域内核 → 阶段 2 存储与增量索引 → 阶段 3 查询服务+契约层+CLI → 阶段 4 Agent 决策循环 → 阶段 5 MCP 化 → 阶段 6 评测闭环。全部完成;长期回顾见 `docs/PROJECT-RECAP.md`,评测报告见 `eval/report/`。学习计划见 `docs/mini_agent_lab/AgentRecall复现式学习计划.md`。
