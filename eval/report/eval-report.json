@@ -1,0 +1,1079 @@
+{
+  "generatedAt": "2026-08-29T16:55:02.461Z",
+  "datasetSize": 24,
+  "modes": [
+    {
+      "mode": "A",
+      "recallAt5": 0.5,
+      "mrr": 0.5,
+      "avgToolCalls": 0,
+      "avgTokens": 0,
+      "avgLatencyMs": 0.1850333333333367,
+      "honestNoHit": 1,
+      "perCase": [
+        {
+          "id": "k01",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.9229000000000269,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k02",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.26749999999992724,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k03",
+          "orderedKeys": [
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.17090000000007421,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k04",
+          "orderedKeys": [
+            "codex:roll-abc-222"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.15419999999994616,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k05",
+          "orderedKeys": [
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.2074000000000069,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k06",
+          "orderedKeys": [
+            "claude-cli:sess-005"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.14200000000005275,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k07",
+          "orderedKeys": [
+            "claude-cli:sess-004"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.24450000000001637,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k08",
+          "orderedKeys": [
+            "claude-cli:sess-006"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.5107000000000426,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k09",
+          "orderedKeys": [
+            "codex:roll-abc-333"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.33740000000011605,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "k10",
+          "orderedKeys": [
+            "claude-cli:sess-002"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.26880000000005566,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "p01",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.11230000000000473,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "p02",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.09469999999987522,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "p03",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.09230000000002292,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "p04",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.08679999999981192,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "p05",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.09090000000014697,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "p06",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.10830000000009932,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "t01",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.11290000000008149,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "t02",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.06989999999996144,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "t03",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.055399999999963256,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "t04",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.06060000000002219,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "n01",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.0725999999999658,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "n02",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.10619999999994434,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "n03",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.08389999999985776,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        },
+        {
+          "id": "n04",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.06770000000005894,
+          "toolCalls": 0,
+          "tokens": 0,
+          "honest": true
+        }
+      ]
+    },
+    {
+      "mode": "B",
+      "recallAt5": 1,
+      "mrr": 0.9,
+      "avgToolCalls": 1,
+      "avgTokens": 15,
+      "avgLatencyMs": 0.12748333333335418,
+      "honestNoHit": 1,
+      "perCase": [
+        {
+          "id": "k01",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.3106999999999971,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k02",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.17849999999998545,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k03",
+          "orderedKeys": [
+            "claude-cli:sess-002",
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 2
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.18610000000012406,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k04",
+          "orderedKeys": [
+            "codex:roll-abc-222"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.10979999999995016,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k05",
+          "orderedKeys": [
+            "claude-cli:sess-002",
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 2
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1516999999998916,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k06",
+          "orderedKeys": [
+            "claude-cli:sess-005"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.10930000000007567,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k07",
+          "orderedKeys": [
+            "claude-cli:sess-004"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.09539999999992688,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k08",
+          "orderedKeys": [
+            "claude-cli:sess-006"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1978999999998905,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k09",
+          "orderedKeys": [
+            "codex:roll-abc-333"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.17840000000001055,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "k10",
+          "orderedKeys": [
+            "claude-cli:sess-002"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.143100000000004,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "p01",
+          "orderedKeys": [
+            "claude-cli:sess-002"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1369999999999436,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "p02",
+          "orderedKeys": [
+            "claude-cli:sess-002",
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 2
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1451999999999316,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "p03",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.14720000000011169,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "p04",
+          "orderedKeys": [
+            "claude-cli:sess-005"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.10630000000014661,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "p05",
+          "orderedKeys": [
+            "claude-cli:sess-004"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.08519999999998618,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "p06",
+          "orderedKeys": [
+            "workbuddy-cli:session-b",
+            "workbuddy-cli:session-a"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 2
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.16069999999990614,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "t01",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.09979999999995925,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "t02",
+          "orderedKeys": [
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1045000000001437,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "t03",
+          "orderedKeys": [
+            "claude-cli:sess-005"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.07750000000010004,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "t04",
+          "orderedKeys": [
+            "codex:roll-abc-222"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.07190000000014152,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "n01",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.07240000000001601,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "n02",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.06130000000007385,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "n03",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.06190000000015061,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        },
+        {
+          "id": "n04",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.06780000000003383,
+          "toolCalls": 1,
+          "tokens": 15,
+          "honest": true
+        }
+      ]
+    },
+    {
+      "mode": "C",
+      "recallAt5": 1,
+      "mrr": 1,
+      "avgToolCalls": 1,
+      "avgTokens": 30,
+      "avgLatencyMs": 0.3525166666666261,
+      "honestNoHit": 1,
+      "perCase": [
+        {
+          "id": "k01",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 2.931200000000217,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k02",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.3529999999998381,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k03",
+          "orderedKeys": [
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.3324999999999818,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k04",
+          "orderedKeys": [
+            "codex:roll-abc-222"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.2726000000000113,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k05",
+          "orderedKeys": [
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.38259999999991123,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k06",
+          "orderedKeys": [
+            "claude-cli:sess-005"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.2401999999999589,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k07",
+          "orderedKeys": [
+            "claude-cli:sess-004"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.177599999999984,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k08",
+          "orderedKeys": [
+            "claude-cli:sess-006"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.24339999999983775,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k09",
+          "orderedKeys": [
+            "codex:roll-abc-333"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.2579999999998108,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "k10",
+          "orderedKeys": [
+            "claude-cli:sess-002"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.21679999999992106,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "p01",
+          "orderedKeys": [
+            "claude-cli:sess-002"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.16380000000003747,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "p02",
+          "orderedKeys": [
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1879999999998745,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "p03",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1755000000000564,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "p04",
+          "orderedKeys": [
+            "claude-cli:sess-005"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.19139999999993051,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "p05",
+          "orderedKeys": [
+            "claude-cli:sess-004"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.13380000000006476,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "p06",
+          "orderedKeys": [
+            "workbuddy-cli:session-a"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.2766999999998916,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "t01",
+          "orderedKeys": [
+            "claude-cli:sess-001"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.6432999999999538,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "t02",
+          "orderedKeys": [
+            "codex:roll-abc-111"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.27340000000003783,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "t03",
+          "orderedKeys": [
+            "claude-cli:sess-005"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.23469999999997526,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "t04",
+          "orderedKeys": [
+            "codex:roll-abc-222"
+          ],
+          "outcome": {
+            "hit": true,
+            "rank": 1
+          },
+          "hasExpectation": true,
+          "latencyMs": 0.1957999999999629,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "n01",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.20849999999995816,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "n02",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.1391999999998461,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "n03",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.11670000000003711,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        },
+        {
+          "id": "n04",
+          "orderedKeys": [],
+          "outcome": {
+            "hit": false,
+            "rank": 0
+          },
+          "hasExpectation": false,
+          "latencyMs": 0.11169999999992797,
+          "toolCalls": 1,
+          "tokens": 30,
+          "honest": true
+        }
+      ]
+    }
+  ]
+}
