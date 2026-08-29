@@ -1,0 +1,2 @@
+﻿{"type":"user","sessionId":"sess-005","cwd":"/proj/demo","timestamp":"2026-08-05T10:00:00.000Z","message":{"role":"user","content":"这行前有 BOM 也要能解析"}}
+{"type":"assistant","sessionId":"sess-005","cwd":"/proj/demo","timestamp":"2026-08-05T10:00:04.000Z","message":{"role":"assistant","content":"解析前剥离 BOM 即可。"}}

@@ -1,0 +1,3 @@
+{"type":"summary","summary":"关于索引的一段摘要","leafUuid":"sess-003"}
+{"type":"user","sessionId":"sess-003","cwd":"/proj/other","timestamp":"2026-08-03T08:00:00.000Z","message":{"role":"user","content":"ReAct 循环是什么?"}}
+{"type":"assistant","sessionId":"sess-003","cwd":"/proj/other","timestamp":"2026-08-03T08:00:07.000Z","message":{"role":"assistant","content":"推理与行动交替进行。"}}
