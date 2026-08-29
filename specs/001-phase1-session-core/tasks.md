@@ -24,9 +24,9 @@
 
 **Purpose**: 项目骨架与工具链,宪法工程约束落进配置
 
-- [ ] T001 创建 `package.json`(`"type": "module"`;scripts:`test` → `vitest run`、`typecheck` → `tsc --noEmit`)与 `tsconfig.json`(`strict: true`、`module: NodeNext`、`target: ES2023`、`noEmit: true`、`types: ["node"]`);禁止路径别名(宪法工程约束)
-- [ ] T002 配置 `vitest.config.ts`(默认约定,环境 node)并创建恒通过的冒烟测试 `src/core/smoke.test.ts`
-- [ ] T003 安装开发期依赖 `typescript` / `vitest` / `@types/node`(宪法原则 IV 白名单,运行时零依赖),首次跑通 `npx tsc --noEmit` 与 `npm test` 全绿
+- [x] T001 创建 `package.json`(`"type": "module"`;scripts:`test` → `vitest run`、`typecheck` → `tsc --noEmit`)与 `tsconfig.json`(`strict: true`、`module: NodeNext`、`target: ES2023`、`noEmit: true`、`types: ["node"]`);禁止路径别名(宪法工程约束)
+- [x] T002 配置 `vitest.config.ts`(默认约定,环境 node)并创建恒通过的冒烟测试 `src/core/smoke.test.ts`
+- [x] T003 安装开发期依赖 `typescript` / `vitest` / `@types/node`(宪法原则 IV 白名单,运行时零依赖),首次跑通 `npx tsc --noEmit` 与 `npm test` 全绿
 
 **Checkpoint**: 骨架就绪,双门禁首次全绿
 
@@ -38,8 +38,8 @@
 
 **⚠️ CRITICAL**: 本阶段未完成前不得开始任何用户故事
 
-- [ ] T004 实现 `src/core/types.ts`:全部领域类型与唯一出处(Session/SessionMessage/LoadedSession/SessionSource/SessionSourceFamily/SessionFormat/SessionSourceDescriptor/SessionSourceCapabilities/LoadOptions/LoadResult/LoadStats/SourceLoadStats/ParsedFile),字段与校验规则严格对照 `contracts/core-interfaces.md` 第 1 节;文件顶部一行职责注释(宪法 III)
-- [ ] T005 实现 `src/core/session-sources.ts` 注册表数据:`SESSION_SOURCE_REGISTRY` 内置 3 个描述符(claude-cli / codex 默认开,workbuddy-cli 五能力全 false)+ `getEnabledSources(sources?)`(未传 → 仅 optionalSetting===null;未知 ID 抛错),对照 `contracts/core-interfaces.md` 第 2 节;`validateSessionSourceRegistry` 本任务仅留签名,US4 实现
+- [x] T004 实现 `src/core/types.ts`:全部领域类型与唯一出处(Session/SessionMessage/LoadedSession/SessionSource/SessionSourceFamily/SessionFormat/SessionSourceDescriptor/SessionSourceCapabilities/LoadOptions/LoadResult/LoadStats/SourceLoadStats/ParsedFile),字段与校验规则严格对照 `contracts/core-interfaces.md` 第 1 节;文件顶部一行职责注释(宪法 III)
+- [x] T005 实现 `src/core/session-sources.ts` 注册表数据:`SESSION_SOURCE_REGISTRY` 内置 3 个描述符(claude-cli / codex 默认开,workbuddy-cli 五能力全 false)+ `getEnabledSources(sources?)`(未传 → 仅 optionalSetting===null;未知 ID 抛错),对照 `contracts/core-interfaces.md` 第 2 节;`validateSessionSourceRegistry` 本任务仅留签名,US4 实现
 
 **Checkpoint**: 领域模型与注册表数据可用,用户故事可并行展开
 
@@ -53,12 +53,12 @@
 
 ### Tests for User Story 1
 
-- [ ] T006 [P] [US1] 创建正常合成样例 `fixtures/claude/normal-1.jsonl`、`fixtures/claude/normal-2.jsonl`(ISO 时间戳,含数组型 content)、`fixtures/codex/rollout-20260801T100000.jsonl`、`fixtures/codex/rollout-20260802T090000.jsonl`(毫秒时间戳)、`fixtures/workbuddy/session-a.jsonl`(秒时间戳)、`fixtures/workbuddy/session-b.jsonl`(含空行),行结构对照 `research.md` R5;fixtures 只读,绝不放真实数据(宪法 VI)
-- [ ] T007 [P] [US1] 编写 `src/core/format-adapters.test.ts` 正常路径用例:三格式各断言 session 元数据(rawId/projectPath/firstQuestion/originalTitle/timestamp)与消息列表(index/role/content/timestamp);先写测试确认失败
-- [ ] T008 [US1] 实现 `src/core/format-adapters.ts`:`FORMAT_ADAPTERS` 三适配器正常路径 + `normalizeTimestampMs`(归一规则见 research R1;<10^12 秒×1000,ISO 用 Date.parse,非法→0),纯函数不碰 fs(宪法 VII);注释写「为什么」(宪法 III)
-- [ ] T009 [US1] 编写 `src/core/session-loader.test.ts` 正常用例(mkdtemp 临时目录复制 fixtures):返回 sessions+stats、排序确定性(两次结果一致)、无文件来源计 0;先确认失败
-- [ ] T010 [US1] 实现 `src/core/session-loader.ts`:`loadSessions(options)`——getEnabledSources → 递归 readdir(withFileTypes) → filePattern 过滤 → readFile → 适配器调度 → 组装 LoadedSession(sessionKey=`${source}:${rawId}`、messageCount)→ 统计(注册表顺序、全部启用来源含计 0);唯一 fs 模块(宪法 VII),目录不存在计 0 不抛错
-- [ ] T011 [US1] 在 `src/core/session-loader.test.ts` 增加【验收演示】用例:加载仓库 `fixtures/` 全目录,console 打印「来源/会话数/消息数/坏行数」统计表,并断言 claude-cli 与 codex 会话数 > 0(计划 1.4 可运行演示)
+- [x] T006 [P] [US1] 创建正常合成样例 `fixtures/claude/normal-1.jsonl`、`fixtures/claude/normal-2.jsonl`(ISO 时间戳,含数组型 content)、`fixtures/codex/rollout-20260801T100000.jsonl`、`fixtures/codex/rollout-20260802T090000.jsonl`(毫秒时间戳)、`fixtures/workbuddy/session-a.jsonl`(秒时间戳)、`fixtures/workbuddy/session-b.jsonl`(含空行),行结构对照 `research.md` R5;fixtures 只读,绝不放真实数据(宪法 VI)
+- [x] T007 [P] [US1] 编写 `src/core/format-adapters.test.ts` 正常路径用例:三格式各断言 session 元数据(rawId/projectPath/firstQuestion/originalTitle/timestamp)与消息列表(index/role/content/timestamp);先写测试确认失败
+- [x] T008 [US1] 实现 `src/core/format-adapters.ts`:`FORMAT_ADAPTERS` 三适配器正常路径 + `normalizeTimestampMs`(归一规则见 research R1;<10^12 秒×1000,ISO 用 Date.parse,非法→0),纯函数不碰 fs(宪法 VII);注释写「为什么」(宪法 III)
+- [x] T009 [US1] 编写 `src/core/session-loader.test.ts` 正常用例(mkdtemp 临时目录复制 fixtures):返回 sessions+stats、排序确定性(两次结果一致)、无文件来源计 0;先确认失败
+- [x] T010 [US1] 实现 `src/core/session-loader.ts`:`loadSessions(options)`——getEnabledSources → 递归 readdir(withFileTypes) → filePattern 过滤 → readFile → 适配器调度 → 组装 LoadedSession(sessionKey=`${source}:${rawId}`、messageCount)→ 统计(注册表顺序、全部启用来源含计 0);唯一 fs 模块(宪法 VII),目录不存在计 0 不抛错
+- [x] T011 [US1] 在 `src/core/session-loader.test.ts` 增加【验收演示】用例:加载仓库 `fixtures/` 全目录,console 打印「来源/会话数/消息数/坏行数」统计表,并断言 claude-cli 与 codex 会话数 > 0(计划 1.4 可运行演示)
 
 **Checkpoint**: MVP 可独立验收——`npm test` 全绿,演示输出三列统计与 fixtures 实际内容一致
 
@@ -72,10 +72,10 @@
 
 ### Tests for User Story 2
 
-- [ ] T012 [P] [US2] 补齐损坏样例使 fixtures 总数 ≥10:`fixtures/claude/broken-halfline.jsonl`(最后一行半行 JSON)、`fixtures/claude/with-bom.jsonl`(UTF-8 BOM)、`fixtures/claude/empty.jsonl`(0 字节)、`fixtures/claude/unknown-lines.jsonl`(合法 JSON 非 message 行)、`fixtures/codex/rollout-broken.jsonl`(半行损坏)
-- [ ] T013 [P] [US2] `src/core/format-adapters.test.ts` 容错用例:半行→坏行计数≥1 且前面行全解析;BOM→正常解析;空文本→0 消息不返回 null;全坏→坏行数=总行数;空行→不计坏行;非消息行→忽略不计(先确认失败)
-- [ ] T014 [US2] 实现 `src/core/format-adapters.ts` 容错分支:`stripBom`、逐行 try/catch(坏行计数继续)、空行跳过不计、未知 type 行忽略、空文件产出 0 消会话(澄清 FR-012 语义);注释说明「坏行只与能否解析相关」的语义边界
-- [ ] T015 [US2] `src/core/session-loader.test.ts` 容错贯通用例(mkdtemp 构造):单文件损坏不拖垮整体(SC-002)、适配器返回 null → skippedBadLines+1(research R7)、重复会话标识各自产出(FR-012);确认 loader 侧语义无缺口
+- [x] T012 [P] [US2] 补齐损坏样例使 fixtures 总数 ≥10:`fixtures/claude/broken-halfline.jsonl`(最后一行半行 JSON)、`fixtures/claude/with-bom.jsonl`(UTF-8 BOM)、`fixtures/claude/empty.jsonl`(0 字节)、`fixtures/claude/unknown-lines.jsonl`(合法 JSON 非 message 行)、`fixtures/codex/rollout-broken.jsonl`(半行损坏)
+- [x] T013 [P] [US2] `src/core/format-adapters.test.ts` 容错用例:半行→坏行计数≥1 且前面行全解析;BOM→正常解析;空文本→0 消息不返回 null;全坏→坏行数=总行数;空行→不计坏行;非消息行→忽略不计(先确认失败)
+- [x] T014 [US2] 实现 `src/core/format-adapters.ts` 容错分支:`stripBom`、逐行 try/catch(坏行计数继续)、空行跳过不计、未知 type 行忽略、空文件产出 0 消会话(澄清 FR-012 语义);注释说明「坏行只与能否解析相关」的语义边界
+- [x] T015 [US2] `src/core/session-loader.test.ts` 容错贯通用例(mkdtemp 构造):单文件损坏不拖垮整体(SC-002)、适配器返回 null → skippedBadLines+1(research R7)、重复会话标识各自产出(FR-012);确认 loader 侧语义无缺口
 
 **Checkpoint**: SC-001/SC-002 满足——含损坏样例的 fixtures 全量加载成功且计数精确
 
@@ -89,8 +89,8 @@
 
 ### Tests for User Story 3
 
-- [ ] T016 [P] [US3] `src/core/session-loader.test.ts` 过滤用例:显式 `sources:["claude-cli"]` → 其他来源解析率 0(SC-005);不传 sources → 默认仅 claude-cli+codex(workbuddy 不出现,US3 场景 2);传入未知来源 ID → 抛错(契约第 4 节);先确认失败
-- [ ] T017 [US3] 实现 `src/core/session-loader.ts` 过滤逻辑:启用来源解析顺序化、逐来源独立统计;`getEnabledSources` 校验未知 ID 抛错(本任务在 T005 签名上补齐行为,不新增分支式判断)
+- [x] T016 [P] [US3] `src/core/session-loader.test.ts` 过滤用例:显式 `sources:["claude-cli"]` → 其他来源解析率 0(SC-005);不传 sources → 默认仅 claude-cli+codex(workbuddy 不出现,US3 场景 2);传入未知来源 ID → 抛错(契约第 4 节);先确认失败
+- [x] T017 [US3] 实现 `src/core/session-loader.ts` 过滤逻辑:启用来源解析顺序化、逐来源独立统计;`getEnabledSources` 校验未知 ID 抛错(本任务在 T005 签名上补齐行为,不新增分支式判断)
 
 **Checkpoint**: SC-005 满足,默认启用范围与澄清结论一致
 
@@ -104,8 +104,8 @@
 
 ### Tests for User Story 4
 
-- [ ] T018 [P] [US4] 编写 `src/core/session-sources.test.ts`:合法注册表校验通过且 ID 无重复;以「构造坏描述符 → 单独校验」方式覆盖:缺 id/label/format/relativeDir、filePattern 非正则、capabilities 缺键或非布尔、ID 重复、relativeDir 含 `..`(先确认失败)
-- [ ] T019 [US4] 实现 `src/core/session-sources.ts` 的 `validateSessionSourceRegistry()`:逐条不变量检查(对照 data-model 校验列),违规抛 Error 并列出「来源+字段+问题」;不改注册表数据本身
+- [x] T018 [P] [US4] 编写 `src/core/session-sources.test.ts`:合法注册表校验通过且 ID 无重复;以「构造坏描述符 → 单独校验」方式覆盖:缺 id/label/format/relativeDir、filePattern 非正则、capabilities 缺键或非布尔、ID 重复、relativeDir 含 `..`(先确认失败)
+- [x] T019 [US4] 实现 `src/core/session-sources.ts` 的 `validateSessionSourceRegistry()`:逐条不变量检查(对照 data-model 校验列),违规抛 Error 并列出「来源+字段+问题」;不改注册表数据本身
 
 **Checkpoint**: SC-004 满足——注册表抽象自检查生效
 
@@ -115,9 +115,9 @@
 
 **Purpose**: 文档合规与最终验收
 
-- [ ] T020 [P] 补齐仓库根 `README.md`(项目一句话、目录结构、npm 命令、宪法红线提示),全中文(宪法 I)
-- [ ] T021 [P] 注释复查:4 个源文件均有顶部职责行,容错/归一/注册表不变量处有「为什么」中文注释(宪法 III)
-- [ ] T022 运行 `quickstart.md` 完整验证:`npx tsc --noEmit` + `npm test` 全绿,演示统计与 fixtures 实际内容逐条核对;对照 spec SC-001~SC-006 打勾,并在执行报告记录「与原版差距」(loader 简化点,依据 research R6)
+- [x] T020 [P] 补齐仓库根 `README.md`(项目一句话、目录结构、npm 命令、宪法红线提示),全中文(宪法 I)
+- [x] T021 [P] 注释复查:4 个源文件均有顶部职责行,容错/归一/注册表不变量处有「为什么」中文注释(宪法 III)
+- [x] T022 运行 `quickstart.md` 完整验证:`npx tsc --noEmit` + `npm test` 全绿,演示统计与 fixtures 实际内容逐条核对;对照 spec SC-001~SC-006 打勾,并在执行报告记录「与原版差距」(loader 简化点,依据 research R6)
 
 ---
 
