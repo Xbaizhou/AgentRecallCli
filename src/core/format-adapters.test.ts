@@ -75,6 +75,56 @@ describe("workbuddy-jsonl 适配器(正常路径)", () => {
   });
 });
 
+describe("容错语义(US2,FR-005/FR-012)", () => {
+  it("半行 JSON:坏行计数 ≥1,前面行全部解析", () => {
+    const text =
+      '{"type":"user","sessionId":"s-9","cwd":"/p","timestamp":"2026-08-04T10:00:00.000Z","message":{"role":"user","content":"正常第一行"}}\n' +
+      '{"type":"assistant","sessionId":"s-9","cwd":"/p","timestamp":"2026-08-04T10:00:05.00';
+    const parsed = claude(text, "/root/claude/broken.jsonl");
+    expect(parsed!.messages).toHaveLength(1);
+    expect(parsed!.badLineCount).toBe(1);
+  });
+
+  it("BOM 开头:剥离后正常解析", () => {
+    const text =
+      "\uFEFF" +
+      '{"type":"user","sessionId":"s-bom","cwd":"/p","timestamp":1754035200000,"message":{"role":"user","content":"带 BOM"}}';
+    const parsed = claude(text, "/root/claude/with-bom.jsonl");
+    expect(parsed!.messages).toHaveLength(1);
+    expect(parsed!.messages[0].content).toBe("带 BOM");
+    expect(parsed!.badLineCount).toBe(0);
+  });
+
+  it("空文件:产出 0 消息,不返回 null,rawId 回退文件名", () => {
+    const parsed = claude("", "/root/claude/empty.jsonl");
+    expect(parsed).not.toBeNull();
+    expect(parsed!.messages).toHaveLength(0);
+    expect(parsed!.rawId).toBe("empty");
+    expect(parsed!.timestamp).toBe(0);
+  });
+
+  it("整文件全坏:坏行数 = 总行数,仍产出 0 消息会话", () => {
+    const parsed = codex("这不是JSON\n这也不是\n{损坏", "/root/codex/rollout-bad.jsonl");
+    expect(parsed!.messages).toHaveLength(0);
+    expect(parsed!.badLineCount).toBe(3);
+  });
+
+  it("空行与纯空白行:跳过且不计坏行", () => {
+    const text =
+      '\n{"ts":1754035200,"role":"user","text":"问题"}\n   \n\t\n{"ts":1754035206,"role":"assistant","text":"回答"}\n';
+    const parsed = workbuddy(text, "/root/workbuddy/session-b.jsonl");
+    expect(parsed!.messages).toHaveLength(2);
+    expect(parsed!.badLineCount).toBe(0);
+  });
+
+  it("合法 JSON 但非消息内容:忽略且不计坏行(语义边界:坏行只与能否解析相关)", () => {
+    const text = "[1,2,3]\n42\n\"字符串行\"\n";
+    const parsed = workbuddy(text, "/root/workbuddy/odd.jsonl");
+    expect(parsed!.messages).toHaveLength(0);
+    expect(parsed!.badLineCount).toBe(0);
+  });
+});
+
 describe("normalizeTimestampMs(归一边界,研究 R1)", () => {
   it("数值秒(< 10^12)乘以 1000", () => {
     expect(normalizeTimestampMs(1754035200)).toBe(1754035200000);

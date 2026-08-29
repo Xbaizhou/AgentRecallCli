@@ -78,6 +78,52 @@ describe("loadSessions:加载、组装与统计(US1)", () => {
   });
 });
 
+describe("loadSessions:容错贯通(US2,FR-005/FR-012)", () => {
+  it("单个文件损坏不拖垮整体,坏行计入来源统计(SC-001/SC-002)", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "claude"), { recursive: true });
+    await writeFile(join(root, "claude", "good.jsonl"), CLAUDE_LINE, "utf8");
+    await writeFile(
+      join(root, "claude", "broken.jsonl"),
+      CLAUDE_LINE + '\n{"type":"assistant","sessionId":"s-1","cwd":"/p","timestamp":"2026',
+      "utf8",
+    );
+    const { sessions, stats } = await loadSessions({ rootDir: root, sources: ["claude-cli"] });
+    expect(sessions).toHaveLength(2); // 好文件正常产出,坏文件前半也产出
+    const claudeStats = stats.perSource[0];
+    expect(claudeStats.sessionCount).toBe(2);
+    expect(claudeStats.messageCount).toBe(2);
+    expect(claudeStats.skippedBadLines).toBe(1); // 半行被计数,不静默
+  });
+
+  it("适配器返回 null → skippedBadLines + 1/文件(研究 R7 防御分支)", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "claude"), { recursive: true });
+    await writeFile(join(root, "claude", "x.jsonl"), CLAUDE_LINE, "utf8");
+    const original = FORMAT_ADAPTERS["claude-jsonl"];
+    FORMAT_ADAPTERS["claude-jsonl"] = () => null; // 临时替换以触达 null 分支
+    try {
+      const { sessions, stats } = await loadSessions({ rootDir: root, sources: ["claude-cli"] });
+      expect(sessions).toHaveLength(0);
+      expect(stats.perSource[0].skippedBadLines).toBe(1);
+    } finally {
+      FORMAT_ADAPTERS["claude-jsonl"] = original; // 恢复,避免污染其他用例
+    }
+  });
+
+  it("重复会话标识:不覆盖不合并,以文件为单位各自产出(FR-012)", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "claude", "part1"), { recursive: true });
+    await mkdir(join(root, "claude", "part2"), { recursive: true });
+    await writeFile(join(root, "claude", "part1", "a.jsonl"), CLAUDE_LINE, "utf8");
+    await writeFile(join(root, "claude", "part2", "b.jsonl"), CLAUDE_LINE, "utf8");
+    const { sessions } = await loadSessions({ rootDir: root, sources: ["claude-cli"] });
+    expect(sessions).toHaveLength(2);
+    expect(sessions[0].session.sessionKey).toBe("claude-cli:s-1");
+    expect(sessions[1].session.sessionKey).toBe("claude-cli:s-1");
+  });
+});
+
 describe("【验收演示】fixtures → LoadedSession[] 统计(计划 1.4,任务 T011)", () => {
   // 只读加载仓库内合成 fixtures,打印统计表。断言保持宽松(会话数>0),
   // 精确计数断言由上方 mkdtemp 用例负责——后续阶段补充 fixtures 不会破坏演示。
