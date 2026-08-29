@@ -173,6 +173,21 @@ describe("loadSessions:按来源过滤(US3,FR-007/SC-005)", () => {
   });
 });
 
+describe("性能基线(计划性能目标:100 文件 < 1 秒,防退化;converge T023)", () => {
+  it("100 个合成文件全量解析在 1 秒内", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "claude"), { recursive: true });
+    for (let i = 0; i < 100; i++) {
+      await writeFile(join(root, "claude", `perf-${String(i).padStart(3, "0")}.jsonl`), CLAUDE_LINE, "utf8");
+    }
+    const started = performance.now();
+    const { sessions } = await loadSessions({ rootDir: root, sources: ["claude-cli"] });
+    const elapsed = performance.now() - started;
+    expect(sessions).toHaveLength(100);
+    expect(elapsed).toBeLessThan(1000);
+  });
+});
+
 describe("【验收演示】fixtures → LoadedSession[] 统计(计划 1.4,任务 T011)", () => {
   // 只读加载仓库内合成 fixtures,打印统计表。断言保持宽松(会话数>0),
   // 精确计数断言由上方 mkdtemp 用例负责——后续阶段补充 fixtures 不会破坏演示。

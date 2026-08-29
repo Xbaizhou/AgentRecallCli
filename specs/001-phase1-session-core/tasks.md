@@ -157,3 +157,9 @@
 - 测试与源码同目录(`src/core/*.test.ts`);文件系统测试一律 mkdtemp(宪法 VI)
 - fixtures 只读;任何任务不得引入白名单外依赖(宪法 IV)
 - 提交节奏:每任务或逻辑组一提交,提交信息全中文
+
+---
+
+## Phase 8: Convergence($speckit-converge 于 2026-08-29 追加)
+
+- [x] T023 在 `src/core/session-loader.test.ts` 增加性能基线用例:mkdtemp 生成 100 个合成会话文件,断言 `loadSessions` 全量解析 < 1000ms 且会话数 = 100(per plan 性能目标「100 文件 < 1 秒」防退化,gap-type: missing)
