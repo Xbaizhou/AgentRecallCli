@@ -103,17 +103,17 @@ const CASES: DemoCase[] = [
     expectedKey: "claude-cli:s-2",
     evidence: "火锅",
   },
-  // 第 5 问:观察后无命中 → 诚实回答「未找到」而非编造
+  // 第 5 问:时间窗内无命中 → 诚实回答「未找到」而非编造(不引用未观察的键)
   {
     question: "上周关于 Rerank 的讨论结论?",
     script: () =>
       new MockLlm(
         { toolCalls: [call("now")] },
         { toolCalls: [call("search_sessions", { query: "Rerank", afterDaysBack: 7 })] },
-        { content: "观察结果中未见上周的 Rerank 讨论;现有最接近的是 codex:r-1(2026-08-20)。" },
+        { content: "上周时间窗内没有命中任何 Rerank 相关讨论,无法给出结论。" },
       ),
-    expectedKey: "codex:r-1",
-    evidence: "未在上周命中",
+    expectedKey: "",
+    evidence: "没有命中",
   },
 ];
 
