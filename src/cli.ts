@@ -8,6 +8,7 @@ import { searchSessions, sessionStats } from "./core/search.js";
 import { getMessages } from "./core/store/messages.js";
 import { MESSAGES_CMD, SEARCH_CMD, STATS_CMD } from "./shared/commands.js";
 import { syncSessions } from "./core/indexer.js";
+import { writeDbPointer } from "./mcp/db-pointer.js";
 import type { ZodError } from "zod";
 
 /** 词法切分:`--key value` / `--key=value` / 位置参数;数值字符串转 number */
@@ -133,6 +134,8 @@ function helpLines(): string[] {
 export async function main(): Promise<void> {
   const db = openDatabase();
   migrateMiniRecallStore(db);
+  // 主程序职责:把库路径写给进程外的 MCP server(阶段 5 db 指针机制)
+  writeDbPointer(DEFAULT_DB_PATH);
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   console.log(`mini-recall REPL(库: ${DEFAULT_DB_PATH});输入 help 查看命令。`);
   for (;;) {
