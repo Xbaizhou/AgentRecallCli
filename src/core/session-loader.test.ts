@@ -124,6 +124,55 @@ describe("loadSessions:容错贯通(US2,FR-005/FR-012)", () => {
   });
 });
 
+describe("loadSessions:按来源过滤(US3,FR-007/SC-005)", () => {
+  it("显式指定单一来源:其他来源文件解析率 0(SC-005)", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "claude"), { recursive: true });
+    await mkdir(join(root, "codex"), { recursive: true });
+    await writeFile(join(root, "claude", "a.jsonl"), CLAUDE_LINE, "utf8");
+    await writeFile(
+      join(root, "codex", "rollout-x.jsonl"),
+      '{"type":"session_meta","session_id":"roll-1","cwd":"/c","timestamp":1754035200000}\n',
+      "utf8",
+    );
+    const { sessions, stats } = await loadSessions({ rootDir: root, sources: ["claude-cli"] });
+    expect(sessions.every((s) => s.session.source === "claude-cli")).toBe(true);
+    expect(stats.perSource.map((s) => s.source)).toEqual(["claude-cli"]);
+  });
+
+  it("不传 sources:默认仅加载 optionalSetting=null 的来源,workbuddy 不出现", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "workbuddy"), { recursive: true });
+    await writeFile(
+      join(root, "workbuddy", "s.jsonl"),
+      '{"ts":1754035200,"role":"user","text":"问题"}\n',
+      "utf8",
+    );
+    const { sessions } = await loadSessions({ rootDir: root });
+    expect(sessions).toHaveLength(0); // workbuddy 需显式开启,默认不被触碰
+  });
+
+  it("显式开启 workbuddy 后可加载(能力开关表达产品边界)", async () => {
+    const root = await makeTmpRoot();
+    await mkdir(join(root, "workbuddy"), { recursive: true });
+    await writeFile(
+      join(root, "workbuddy", "s.jsonl"),
+      '{"ts":1754035200,"role":"user","text":"问题"}\n',
+      "utf8",
+    );
+    const { sessions } = await loadSessions({ rootDir: root, sources: ["workbuddy-cli"] });
+    expect(sessions).toHaveLength(1);
+    expect(sessions[0].session.source).toBe("workbuddy-cli");
+  });
+
+  it("传入未知来源 ID 直接抛错,不静默忽略(契约 §2)", async () => {
+    const root = await makeTmpRoot();
+    await expect(
+      loadSessions({ rootDir: root, sources: ["no-such-source" as never] }),
+    ).rejects.toThrow(/未知的会话来源/);
+  });
+});
+
 describe("【验收演示】fixtures → LoadedSession[] 统计(计划 1.4,任务 T011)", () => {
   // 只读加载仓库内合成 fixtures,打印统计表。断言保持宽松(会话数>0),
   // 精确计数断言由上方 mkdtemp 用例负责——后续阶段补充 fixtures 不会破坏演示。
