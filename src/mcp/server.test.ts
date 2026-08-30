@@ -116,8 +116,10 @@ describe("openReadonlyDb(US3/SC-004)", () => {
     writer.close();
   });
 
-  it("指针缺失时报可诊断错误(边界)", () => {
-    expect(() => openReadonlyDb({})).toThrow(/找不到数据库路径/);
+  it("指针缺失时报可诊断错误(边界;用空临时 HOME 保证封闭)", async () => {
+    const emptyHome = await mkdtemp(join(tmpdir(), "mcp-empty-home-"));
+    homes.push(emptyHome);
+    expect(() => openReadonlyDb({ MINI_RECALL_HOME: emptyHome })).toThrow(/找不到数据库路径/);
   });
 });
 

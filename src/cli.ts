@@ -130,39 +130,47 @@ function helpLines(): string[] {
   ];
 }
 
-/** REPL 薄壳:仅负责读写循环与退出 */
+/** REPL 薄壳:仅负责读写循环与退出。用 for-await 逐行消费:
+ *  rl.question 在管道输入 EOF 时会抛 ERR_USE_AFTER_CLOSE(readline 提前 close),异步迭代则两种模式都稳定。 */
 export async function main(): Promise<void> {
   const db = openDatabase();
   migrateMiniRecallStore(db);
   // 主程序职责:把库路径写给进程外的 MCP server(阶段 5 db 指针机制)
   writeDbPointer(DEFAULT_DB_PATH);
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const rl = createInterface({ input: process.stdin, output: process.stdout, crlfDelay: Infinity });
   console.log(`mini-recall REPL(库: ${DEFAULT_DB_PATH});输入 help 查看命令。`);
-  for (;;) {
-    const line = await rl.question("> ");
-    if (line.trim() === "") continue;
-    // sync 需要异步:在这里特判,其余命令走同步调度
-    if (line.trim().startsWith("sync")) {
-      const { flags } = parseLine(line);
-      const rootDir = typeof flags.rootDir === "string" ? flags.rootDir : undefined;
-      if (!rootDir) {
-        console.log("用法: sync --rootDir <目录>");
-        continue;
+  try {
+    process.stdout.write("> ");
+    for await (const line of rl) {
+      const trimmed = line.trim();
+      if (trimmed !== "") {
+        // sync 需要异步:在这里特判,其余命令走同步调度
+        if (trimmed.startsWith("sync")) {
+          const { flags } = parseLine(trimmed);
+          const rootDir = typeof flags.rootDir === "string" ? flags.rootDir : undefined;
+          if (!rootDir) {
+            console.log("用法: sync --rootDir <目录>");
+          } else {
+            const status = await syncSessions(db, { rootDir });
+            console.log(`indexed=${status.indexed} skipped=${status.skipped} removed=${status.removed} conflicts=${status.conflicts} errors=${status.errors.length}`);
+          }
+        } else {
+          const lines = dispatchLine(db, trimmed);
+          if (lines === null) break; // quit / exit
+          console.log(lines.join("\n"));
+        }
       }
-      const status = await syncSessions(db, { rootDir });
-      console.log(`indexed=${status.indexed} skipped=${status.skipped} removed=${status.removed} conflicts=${status.conflicts} errors=${status.errors.length}`);
-      continue;
+      process.stdout.write("> ");
     }
-    const lines = dispatchLine(db, line);
-    if (lines === null) break;
-    console.log(lines.join("\n"));
+  } finally {
+    rl.close();
+    db.close();
   }
-  rl.close();
-  db.close();
 }
 
-// 直接运行本文件时进入 REPL(import.meta 判定,避免构建步骤)
-if (process.argv[1]?.replace(/\\/g, "/").endsWith("src/cli.ts")) {
+// 直接运行本文件时进入 REPL(tsc 产物与 TS 直跑两种形态都要命中)
+const argv1 = process.argv[1]?.replace(/\\/g, "/") ?? "";
+if (argv1.endsWith("src/cli.ts") || argv1.endsWith("dist/cli.js")) {
   main().catch((err) => {
     console.error(String(err));
     process.exitCode = 1;

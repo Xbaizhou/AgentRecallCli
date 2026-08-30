@@ -10,6 +10,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "cli": "npm run build && node dist/cli.js",
     "build:mcp": "node scripts/build-mcp.mjs",
     "eval": "vitest run eval/eval.test.ts"
   },

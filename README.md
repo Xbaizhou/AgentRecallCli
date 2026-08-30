@@ -1,6 +1,7 @@
 # mini-recall 当前进度
 
 > AgentRecall v1 的复现式学习仓库:领域内核(Node + TypeScript + SQLite,不含 Electron UI)+ 会话检索 Agent(ReAct)+ MCP 对外暴露 + 评测闭环。
+> **首次运行请先读《[运行指南](docs/运行指南.md)》**——环境要求、依赖关系、全部命令均已实测。
 
 ## 进度:阶段 0–6 全部完成 ✅
 
