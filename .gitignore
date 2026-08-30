@@ -4,6 +4,9 @@ dist/
 coverage/
 *.log
 
+# 原版参照仓库(阶段 0 的 AgentRecall v1):仅本地对照用,不入库、不推送
+/main-1.0/
+
 # 环境与临时文件
 .env*
 *.tmp
