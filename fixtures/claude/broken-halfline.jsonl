@@ -1,0 +1,2 @@
+{"type":"user","sessionId":"sess-004","cwd":"/proj/demo","timestamp":"2026-08-04T10:00:00.000Z","message":{"role":"user","content":"崩溃前的正常第一行"}}
+{"type":"assistant","sessionId":"sess-004","cwd":"/proj/demo","timestamp":"2026-08-04T10:00:05.00

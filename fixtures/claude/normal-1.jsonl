@@ -1,0 +1,3 @@
+{"type":"user","sessionId":"sess-001","cwd":"/proj/demo","timestamp":"2026-08-01T10:00:00.000Z","message":{"role":"user","content":"FTS5 是什么?"}}
+{"type":"assistant","sessionId":"sess-001","cwd":"/proj/demo","timestamp":"2026-08-01T10:00:05.000Z","message":{"role":"assistant","content":"FTS5 是 SQLite 的全文检索虚拟表模块。"}}
+{"type":"user","sessionId":"sess-001","cwd":"/proj/demo","timestamp":"2026-08-01T10:01:00.000Z","message":{"role":"user","content":"它和 LIKE 有什么区别?"}}

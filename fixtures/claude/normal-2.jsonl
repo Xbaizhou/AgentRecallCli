@@ -1,0 +1,2 @@
+{"type":"user","sessionId":"sess-002","cwd":"/proj/demo","timestamp":"2026-08-02T09:00:00.000Z","message":{"role":"user","content":[{"type":"text","text":"帮我理解增量索引"},{"type":"text","text":"和 WAL 并发"}]}}
+{"type":"assistant","sessionId":"sess-002","cwd":"/proj/demo","timestamp":"2026-08-02T09:00:10.000Z","message":{"role":"assistant","content":[{"type":"text","text":"size+mtime 判定增量,WAL 让读写不再互斥。"}]}}

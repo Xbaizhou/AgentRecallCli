@@ -1,0 +1,3 @@
+{"type":"user","sessionId":"sess-006","cwd":"/proj/other","timestamp":1754294400000,"message":{"role":"user","content":"合法 JSON 但 type 未知,应被忽略"}}
+{"type":"heartbeat","sessionId":"sess-006","cwd":"/proj/other","timestamp":1754294401000,"message":{"role":"user","content":"同样是未知 type"}}
+{"type":"user","sessionId":"sess-006","cwd":"/proj/other","timestamp":1754294402000,"message":{"role":"assistant","content":"只有 user/assistant 入消息"}}

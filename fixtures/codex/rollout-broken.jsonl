@@ -1,0 +1,3 @@
+{"type":"session_meta","session_id":"roll-abc-333","cwd":"/proj/codex","timestamp":1754208000000}
+{"type":"response_item","payload":{"role":"user","content":"这一行是正常的"},"timestamp":1754208005000}
+{"type":"response_item","payload":{"role":"assistant","content":"这一行写

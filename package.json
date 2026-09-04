@@ -1,0 +1,27 @@
+{
+  "name": "mini-recall",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AgentRecall v1 的复现式学习仓库:领域内核 + 会话检索 Agent + MCP 暴露 + 评测闭环",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "cli": "npm run build && node dist/cli.js",
+    "build:mcp": "node scripts/build-mcp.mjs",
+    "eval": "vitest run eval/eval.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "zod": "^4.5.2"
+  }
+}
