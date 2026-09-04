@@ -54,12 +54,20 @@ export interface ScanResult {
 export async function scanSourceFiles(options: {
   rootDir: string;
   sources?: SessionSource[];
+  /** 平铺模式:rootDir 直接就是来源目录树根(如 ~/.codex/sessions),不再拼 <rootDir>/<relativeDir> 子目录。必须显式指定单一来源。 */
+  flat?: boolean;
 }): Promise<ScanResult> {
   const rootDir = resolve(options.rootDir);
   const files: ScannedFile[] = [];
   const errors: string[] = [];
-  for (const descriptor of getEnabledSources(options.sources)) {
-    const paths = await collectFiles(join(rootDir, descriptor.relativeDir), descriptor.filePattern);
+  const enabled = getEnabledSources(options.sources);
+  if (options.flat && enabled.length !== 1) {
+    // 平铺模式下多来源会扫同一个目录并互相抢文件,语义不成立 → 边界上炸掉
+    throw new Error("平铺模式(flat)必须显式指定单一来源(如 sources: ['codex'])");
+  }
+  for (const descriptor of enabled) {
+    const baseDir = options.flat ? rootDir : join(rootDir, descriptor.relativeDir);
+    const paths = await collectFiles(baseDir, descriptor.filePattern);
     for (const filePath of paths) {
       try {
         const st = await stat(filePath);
@@ -122,6 +130,7 @@ export async function loadSessions(options: LoadOptions): Promise<LoadResult> {
   const { files, errors } = await scanSourceFiles({
     rootDir: options.rootDir,
     sources: options.sources,
+    flat: options.flat,
   });
   allErrors.push(...errors);
 

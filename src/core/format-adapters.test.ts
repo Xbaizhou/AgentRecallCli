@@ -58,6 +58,38 @@ describe("codex-jsonl 适配器(正常路径)", () => {
     expect(parsed!.messages[0].timestamp).toBe(1754035205000);
     expect(parsed!.originalTitle).toBe("rollout-1");
   });
+
+  // 以下为 2026-07 实测真实 rollout 结构的合成等价样本(宪法 VI:不使用真实历史数据)
+  it("真实格式:session_id/cwd 在 payload 下,content 为块数组", () => {
+    const text = [
+      '{"timestamp":"2026-07-28T18:20:24.584Z","type":"session_meta","payload":{"session_id":"019fa9f4-bc9f-7ed1-b5b2-fbc448bcc7c2","id":"019fa9f4-bc9f","timestamp":"2026-07-28T18:20:16.415Z","cwd":"C:\\\\proj\\\\demo","originator":"codex","cli_version":"0.146.0"}}',
+      '{"timestamp":"2026-07-28T18:20:24.603Z","type":"response_item","payload":{"type":"message","id":"msg_1","role":"user","content":[{"type":"input_text","text":"FTS5 怎么建表?"}]}}',
+      '{"timestamp":"2026-07-28T18:20:30.000Z","type":"response_item","payload":{"type":"message","id":"msg_2","role":"assistant","content":[{"type":"output_text","text":"用 trigram 分词的"},{"type":"output_text","text":" fts5 虚拟表"}]}}',
+    ].join("\n");
+    const parsed = codex(text, "/sessions/2026/07/29/rollout-x.jsonl");
+    expect(parsed!.rawId).toBe("019fa9f4-bc9f-7ed1-b5b2-fbc448bcc7c2");
+    expect(parsed!.projectPath).toBe("C:\\proj\\demo");
+    expect(parsed!.messages.map((m) => m.role)).toEqual(["user", "assistant"]);
+    expect(parsed!.messages[0].content).toBe("FTS5 怎么建表?");
+    expect(parsed!.messages[1].content).toBe("用 trigram 分词的 fts5 虚拟表");
+    expect(parsed!.messages[0].timestamp).toBe(Date.parse("2026-07-28T18:20:24.603Z"));
+    expect(parsed!.firstQuestion).toBe("FTS5 怎么建表?");
+  });
+
+  it("真实格式:reasoning / function_call / custom_tool_call 不是对话,developer 注入上下文不入库", () => {
+    const text = [
+      '{"timestamp":"2026-07-28T18:20:24.584Z","type":"session_meta","payload":{"session_id":"s-real","cwd":"/p"}}',
+      '{"timestamp":"2026-07-28T18:20:24.603Z","type":"response_item","payload":{"type":"message","role":"developer","content":[{"type":"input_text","text":"<app-context> 桌面端注入</app-context>"}]}}',
+      '{"timestamp":"2026-07-28T18:20:25.000Z","type":"response_item","payload":{"type":"reasoning","role":"assistant","content":[]}}',
+      '{"timestamp":"2026-07-28T18:20:26.000Z","type":"response_item","payload":{"type":"function_call","name":"shell","arguments":"{}"}}',
+      '{"timestamp":"2026-07-28T18:20:27.000Z","type":"response_item","payload":{"type":"custom_tool_call","name":"apply_patch"}}',
+      '{"timestamp":"2026-07-28T18:20:28.000Z","type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"input_text","text":"继续"}]}}',
+      '{"timestamp":"2026-07-28T18:20:29.000Z","type":"response_item","payload":{"type":"message","role":"assistant","content":[{"type":"output_text","text":"好的"}]}}',
+    ].join("\n");
+    const parsed = codex(text, "/sessions/rollout-y.jsonl");
+    expect(parsed!.messages.map((m) => m.role)).toEqual(["user", "assistant"]);
+    expect(parsed!.messages.map((m) => m.content)).toEqual(["继续", "好的"]);
+  });
 });
 
 describe("workbuddy-jsonl 适配器(正常路径)", () => {

@@ -1,24 +1,23 @@
 // 会话加载器测试:目录遍历、组装与统计契约。文件系统一律 mkdtemp 临时目录,绝不触碰真实会话目录(宪法 VI)。
-import { mkdtemp, writeFile, mkdir } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { makeTempDir, removeTempDir } from "../test-utils/temp.js";
 import { FORMAT_ADAPTERS } from "./format-adapters.js";
 import { loadSessions } from "./session-loader.js";
 
 const tmpRoots: string[] = [];
 
 async function makeTmpRoot(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), "mini-recall-"));
+  const dir = await makeTempDir("loader-");
   tmpRoots.push(dir);
   return dir;
 }
 
 // 测试结束后清理临时目录(WAL 约定同样适用于 tmp:用完即收)
 afterEach(async () => {
-  const { rm } = await import("node:fs/promises");
   for (const dir of tmpRoots.splice(0)) {
-    await rm(dir, { recursive: true, force: true });
+    await removeTempDir(dir);
   }
 });
 
@@ -185,6 +184,33 @@ describe("性能基线(计划性能目标:100 文件 < 1 秒,防退化;converge 
     const elapsed = performance.now() - started;
     expect(sessions).toHaveLength(100);
     expect(elapsed).toBeLessThan(1000);
+  });
+});
+
+describe("平铺模式(真实来源布局,如 ~/.codex/sessions)", () => {
+  it("flat=true:rootDir 直接是来源目录树根,递归命中嵌套日期目录", async () => {
+    const root = await makeTmpRoot();
+    // 真实 codex 布局:sessions/YYYY/MM/DD/rollout-*.jsonl,没有 codex/ 这一层
+    await mkdir(join(root, "2026", "07", "29"), { recursive: true });
+    await writeFile(
+      join(root, "2026", "07", "29", "rollout-flat-1.jsonl"),
+      '{"timestamp":"2026-07-28T18:20:24.584Z","type":"session_meta","payload":{"session_id":"flat-sess-1","cwd":"C:\\\\p"}}\n' +
+        '{"timestamp":"2026-07-28T18:20:25.000Z","type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"input_text","text":"平铺模式的问题"}]}}\n',
+      "utf8",
+    );
+    const { sessions, stats } = await loadSessions({ rootDir: root, sources: ["codex"], flat: true });
+    expect(sessions).toHaveLength(1);
+    expect(sessions[0].session.sessionKey).toBe("codex:flat-sess-1");
+    expect(sessions[0].messages[0].content).toBe("平铺模式的问题");
+    expect(stats.perSource.map((s) => s.sessionCount)).toEqual([1]);
+  });
+
+  it("flat 未指定单一来源 → 边界抛错(多来源会扫同一目录互相抢文件)", async () => {
+    const root = await makeTmpRoot();
+    await expect(loadSessions({ rootDir: root, flat: true })).rejects.toThrow(/平铺模式/);
+    await expect(loadSessions({ rootDir: root, sources: ["codex", "claude-cli"], flat: true })).rejects.toThrow(
+      /平铺模式/,
+    );
   });
 });
 

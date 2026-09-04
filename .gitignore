@@ -10,5 +10,7 @@ coverage/
 # 环境与临时文件
 .env*
 *.tmp
+# 测试临时根目录(src/test-utils/temp.ts):不用系统 Temp,避免清理耗时随机器波动
+.tmp/
 .DS_Store
 Thumbs.db

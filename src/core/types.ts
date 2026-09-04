@@ -94,6 +94,8 @@ export interface LoadStats {
 export interface LoadOptions {
   rootDir: string;
   sources?: SessionSource[];
+  /** 平铺模式:rootDir 直接是来源目录树根(真实布局如 ~/.codex/sessions),跳过 <rootDir>/<relativeDir> 约定。必须配合单一 sources 使用 */
+  flat?: boolean;
 }
 
 /** 加载结果:sessions 按文件路径字典序,保证相同输入结果完全一致(SC-006) */
@@ -134,6 +136,8 @@ export interface IndexStatus {
 export interface SyncOptions {
   rootDir: string;
   sources?: SessionSource[];
+  /** 平铺模式:rootDir 直接是来源目录树根(真实布局如 ~/.codex/sessions),跳过 <rootDir>/<relativeDir> 约定。必须配合单一 sources 使用 */
+  flat?: boolean;
   forceReindex?: (source: SessionSource) => boolean;
 }
 

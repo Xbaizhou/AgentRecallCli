@@ -36,6 +36,7 @@ export async function syncSessions(
   const { files, errors } = await scanSourceFiles({
     rootDir,
     sources: options.sources,
+    flat: options.flat,
   });
   status.errors.push(...errors);
   const currentPaths = new Set(files.map((f) => f.filePath));

@@ -125,7 +125,7 @@ function helpLines(): string[] {
     "  search --query <词> [--source <来源>] [--project <前缀>] [--after YYYY-MM-DD] [--before YYYY-MM-DD] [--limit N] [--sort time|relevance]",
     "  messages <sessionKey> [--tail N]",
     "  stats",
-    "  sync --rootDir <目录>     # 扫描目录并增量入库",
+    "  sync --rootDir <目录> [--source <来源>]  # 增量入库;--source 平铺模式(rootDir 即来源目录树根)",
     "  quit / exit               # 退出",
   ];
 }
@@ -149,10 +149,21 @@ export async function main(): Promise<void> {
           const { flags } = parseLine(trimmed);
           const rootDir = typeof flags.rootDir === "string" ? flags.rootDir : undefined;
           if (!rootDir) {
-            console.log("用法: sync --rootDir <目录>");
+            console.log("用法: sync --rootDir <目录> [--source <来源>]");
           } else {
-            const status = await syncSessions(db, { rootDir });
-            console.log(`indexed=${status.indexed} skipped=${status.skipped} removed=${status.removed} conflicts=${status.conflicts} errors=${status.errors.length}`);
+            // --source 指定单一来源 → 平铺模式:rootDir 直接就是该来源的目录树根
+            // (真实布局如 ~/.codex/sessions 下是 YYYY/MM/DD/rollout-*.jsonl,没有 codex/ 这层)
+            const source = typeof flags.source === "string" ? flags.source : undefined;
+            const status = await syncSessions(db, {
+              rootDir,
+              ...(source !== undefined ? { sources: [source as never], flat: true } : {}),
+            });
+            console.log(`indexed=${status.indexed} skipped=${status.skipped} removed=${status.removed} conflicts=${status.conflicts} errors=${status.errors.length} total=${status.total}`);
+            if (status.total === 0) {
+              console.log("提示: 未扫描到任何文件。合成 fixtures 布局用 sync --rootDir <含 claude|codex 子目录的根>;");
+              console.log("      真实来源目录(如 ~/.codex/sessions)用 sync --rootDir <目录> --source codex。");
+            }
+            for (const e of status.errors) console.log(`  错误: ${e}`);
           }
         } else {
           const lines = dispatchLine(db, trimmed);

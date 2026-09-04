@@ -84,8 +84,11 @@ function buildParsedFile(input: {
   };
 }
 
-/** claude 的 message.content 兼容字符串与 [{type:"text",text}] 数组两种形态 */
-function claudeContentToText(content: unknown): string {
+/**
+ * 消息内容归一为纯文本:兼容字符串与 [{type:"text"|"input_text"|"output_text",text}] 块数组两种形态。
+ * claude 与 codex 的块结构同形(都有 {text} 字段),共用一份实现(研究 R6)。
+ */
+function contentToText(content: unknown): string {
   if (typeof content === "string") return content;
   if (Array.isArray(content)) {
     return content
@@ -118,13 +121,21 @@ const claudeAdapter: FormatAdapter = (text, filePath) => {
     messages.push({
       index: messages.length,
       role: typeof message.role === "string" ? message.role : String(rec.type),
-      content: claudeContentToText(message.content),
+      content: contentToText(message.content),
       timestamp: normalizeTimestampMs(rec.timestamp),
     });
   }
   return buildParsedFile({ rawId, projectPath, filePath, messages, badLineCount });
 };
 
+/**
+ * codex 适配器:兼容两种现实形态(研究 R6 实测 2026-07 真实 rollout 得出):
+ * - 真实格式:session_meta 的 session_id/cwd 在 payload 下;response_item.payload 带 type 字段
+ *   (message / reasoning / function_call / custom_tool_call…),message.content 是块数组。
+ * - 合成 fixture 格式:session_id/cwd 在顶层;payload 无 type,content 是字符串。
+ * 只收 user/assistant 的 message 行:developer 是桌面端注入的上下文(纯噪声),
+ * reasoning / function_call 不是对话内容,入检索库只会污染全文索引。
+ */
 const codexAdapter: FormatAdapter = (text, filePath) => {
   const messages: SessionMessage[] = [];
   let badLineCount = 0;
@@ -138,17 +149,28 @@ const codexAdapter: FormatAdapter = (text, filePath) => {
     const rec = line.value;
     if (!isRecord(rec)) continue;
     if (rec.type === "session_meta") {
-      if (rawId === null && typeof rec.session_id === "string") rawId = rec.session_id;
-      if (projectPath === "" && typeof rec.cwd === "string") projectPath = rec.cwd;
+      const payload = isRecord(rec.payload) ? rec.payload : null;
+      if (rawId === null) {
+        const id = payload?.session_id ?? payload?.id ?? rec.session_id;
+        if (typeof id === "string" && id !== "") rawId = id;
+      }
+      if (projectPath === "") {
+        const cwd = payload?.cwd ?? rec.cwd;
+        if (typeof cwd === "string" && cwd !== "") projectPath = cwd;
+      }
       continue; // meta 行只供元数据,不是消息
     }
     if (rec.type !== "response_item") continue;
     const payload = isRecord(rec.payload) ? rec.payload : null;
     if (!payload) continue;
+    // fixture 形态无 payload.type(有 role 即消息);真实形态只认 type === "message"
+    if (payload.type !== undefined && payload.type !== "message") continue;
+    const role = typeof payload.role === "string" ? payload.role : "";
+    if (role !== "user" && role !== "assistant") continue;
     messages.push({
       index: messages.length,
-      role: typeof payload.role === "string" ? payload.role : "",
-      content: typeof payload.content === "string" ? payload.content : "",
+      role,
+      content: contentToText(payload.content),
       timestamp: normalizeTimestampMs(rec.timestamp),
     });
   }

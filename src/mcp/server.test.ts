@@ -1,6 +1,5 @@
 // MCP server 测试:handleRpc 三连、错误码、isError content、db-pointer roundtrip(US1/US3)。
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { DatabaseSync } from "node:sqlite";
@@ -10,6 +9,7 @@ import { migrateMiniRecallStore } from "../core/store/schema.js";
 import { upsertIndexedSession } from "../core/store/sessions.js";
 import { handleRpc, openReadonlyDb } from "./server.js";
 import { readDbPointer, resolveDbPath, writeDbPointer } from "./db-pointer.js";
+import { makeTempDir, removeTempDir } from "../test-utils/temp.js";
 
 let db: DatabaseSync;
 const homes: string[] = [];
@@ -38,7 +38,7 @@ beforeEach(() => {
 });
 
 afterEach(async () => {
-  for (const h of homes.splice(0)) await rm(h, { recursive: true, force: true });
+  for (const h of homes.splice(0)) await removeTempDir(h);
 });
 
 describe("handleRpc(US1/SC-001)", () => {
@@ -101,7 +101,7 @@ describe("handleRpc(US1/SC-001)", () => {
 
 describe("openReadonlyDb(US3/SC-004)", () => {
   it("只读打开现有库并可查询(写连接存在时不阻塞,WAL 并发)", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "mcp-ro-"));
+    const dir = await makeTempDir("mcp-ro-");
     homes.push(dir);
     const path = join(dir, "t.db");
     // 主程序侧:读写连接(建表+迁移)
@@ -117,7 +117,7 @@ describe("openReadonlyDb(US3/SC-004)", () => {
   });
 
   it("指针缺失时报可诊断错误(边界;用空临时 HOME 保证封闭)", async () => {
-    const emptyHome = await mkdtemp(join(tmpdir(), "mcp-empty-home-"));
+    const emptyHome = await makeTempDir("mcp-empty-home-");
     homes.push(emptyHome);
     expect(() => openReadonlyDb({ MINI_RECALL_HOME: emptyHome })).toThrow(/找不到数据库路径/);
   });
@@ -125,7 +125,7 @@ describe("openReadonlyDb(US3/SC-004)", () => {
 
 describe("db-pointer", () => {
   it("write/read roundtrip;MINI_RECALL_DB 覆盖指针(T001)", async () => {
-    const home = await mkdtemp(join(tmpdir(), "mcp-home-"));
+    const home = await makeTempDir("mcp-home-");
     homes.push(home);
     expect(readDbPointer(home)).toBeNull();
     writeDbPointer("/some/db.sqlite", home);

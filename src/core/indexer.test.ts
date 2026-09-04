@@ -1,9 +1,8 @@
 // 增量索引测试:二次全跳、改 1 重索引 1、删除清理、forceReindex、错误隔离、键冲突(SC-001/SC-002/SC-006)。
 import { mkdir, rm, writeFile } from "node:fs/promises";
-import { mkdtemp } from "node:fs/promises";
-import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
+import { makeTempDir, removeTempDir } from "../test-utils/temp.js";
 import type { DatabaseSync } from "node:sqlite";
 import { createInMemoryStore } from "./store/database.js";
 import { migrateMiniRecallStore } from "./store/schema.js";
@@ -20,13 +19,13 @@ const tmpRoots: string[] = [];
 const dbs: DatabaseSync[] = [];
 
 afterEach(async () => {
-  for (const d of tmpRoots.splice(0)) await rm(d, { recursive: true, force: true });
+  for (const d of tmpRoots.splice(0)) await removeTempDir(d);
   for (const d of dbs.splice(0)) d.close();
 });
 
 /** 每个文件独立 session_id(roll-XXX),文件名保持 rollout-* 以匹配 codex 文件模式 */
 async function makeFixtureRoot(fileCount: number): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), "mini-recall-idx-"));
+  const root = await makeTempDir("idx-");
   tmpRoots.push(root);
   await mkdir(join(root, "codex"), { recursive: true });
   for (let i = 0; i < fileCount; i++) {
@@ -178,6 +177,35 @@ describe("性能数据采集(SC-004/SC-006,实测值供 PROJECT-RECAP 引用)", 
     expect(ftsRows.length).toBe(100);
     expect(likeRows.length).toBe(100);
     expect(ftsMs).toBeLessThanOrEqual(likeMs);
+  });
+});
+
+describe("平铺模式同步(真实来源布局)", () => {
+  it("sync flat:rootDir 即来源目录树根,真实 codex 格式入库且可检索", async () => {
+    const root = await makeFixtureRoot(0);
+    // 真实布局:日期子目录 + 真实格式 rollout(合成等价样本,宪法 VI)
+    await mkdir(join(root, "2026", "07", "29"), { recursive: true });
+    await writeFile(
+      join(root, "2026", "07", "29", "rollout-real-1.jsonl"),
+      '{"timestamp":"2026-07-28T18:20:24.584Z","type":"session_meta","payload":{"session_id":"real-sess-1","id":"real-sess-1","cwd":"C:\\\\proj\\\\demo"}}\n' +
+        '{"timestamp":"2026-07-28T18:20:25.000Z","type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"input_text","text":"真实格式的增量索引问题"}]}}\n' +
+        '{"timestamp":"2026-07-28T18:20:26.000Z","type":"response_item","payload":{"type":"reasoning","content":[]}}\n',
+      "utf8",
+    );
+    const db = makeDb();
+    const first = await syncSessions(db, { rootDir: root, sources: ["codex"], flat: true });
+    expect(first).toMatchObject({ indexed: 1, skipped: 0, errors: [] });
+
+    const session = getSession(db, "codex:real-sess-1");
+    expect(session).not.toBeNull();
+    expect(session!.projectPath).toBe("C:\\proj\\demo");
+    // reasoning 行不入库:消息数 = 1
+    expect(session!.messageCount).toBe(1);
+    expect(searchContent(db, "真实格式的增量索引").length).toBe(1);
+
+    // 二次同步全跳过:增量判定在平铺模式下照常生效
+    const second = await syncSessions(db, { rootDir: root, sources: ["codex"], flat: true });
+    expect(second).toMatchObject({ indexed: 0, skipped: 1 });
   });
 });
 
