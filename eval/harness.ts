@@ -18,7 +18,6 @@ export interface EvalCase {
   rewritten: string;
   afterMs?: number;
   beforeMs?: number;
-  afterDaysBack?: number;
   expectedSessionKey: string | null;
 }
 
@@ -141,27 +140,38 @@ export async function runModeB(db: DatabaseSync, cases: EvalCase[]): Promise<Mod
   return finalize("B", perCase);
 }
 
+/** 诚实应答文本:不含任何会话键,用于无命中 / 溯源校验重答 */
+const HONEST_ANSWER = "观察结果中没有命中任何相关讨论,无法给出结论。";
+
+/**
+ * 把绝对时间下界换算成「距今多少天」(search_sessions 只接受相对天数)。
+ * 向上取整,保证换算后的下界不晚于 afterMs——否则边界当天的会话会被切掉。
+ * 必须在运行时算:数据集若硬编码天数,会随真实时间推移而漂移(时间依赖测试陷阱)。
+ */
+function daysBackFrom(afterMs: number | undefined): number | undefined {
+  if (afterMs === undefined) return undefined;
+  return Math.ceil((Date.now() - afterMs) / 86_400_000);
+}
+
 /** 模式 C:完整 Agent 决策循环(脚本化 检索→作答 / 无命中→诚实回答) */
 export async function runModeC(db: DatabaseSync, cases: EvalCase[]): Promise<ModeMetrics> {
   const perCase: CaseResult[] = [];
   for (const c of cases) {
     const started = performance.now();
+    const afterDaysBack = daysBackFrom(c.afterMs);
+    const searchArgs = {
+      query: c.rewritten,
+      ...(afterDaysBack !== undefined ? { afterDaysBack } : {}),
+    };
     const script =
       c.category === "nohit"
-        ? new MockLlm(
-            { toolCalls: [call("search_sessions", { query: c.rewritten })] },
-            { content: "观察结果中没有命中任何相关讨论,无法给出结论。" },
-          )
+        ? new MockLlm({ toolCalls: [call("search_sessions", searchArgs)] }, { content: HONEST_ANSWER })
         : new MockLlm(
-            {
-              toolCalls: [
-                call("search_sessions", {
-                  query: c.rewritten,
-                  ...(c.afterDaysBack !== undefined ? { afterDaysBack: c.afterDaysBack } : {}),
-                }),
-              ],
-            },
+            { toolCalls: [call("search_sessions", searchArgs)] },
             { content: `结论见 ${c.expectedSessionKey}。` },
+            // 第三条:检索未命中时,溯源校验会判「引用了未观察到的键」并要求重答。
+            // 补上诚实重答,让未命中如实降级为记 miss,而不是把评测跑崩。
+            { content: HONEST_ANSWER },
           );
     const result = await runAgent({ question: c.question, db, llm: script });
     const latencyMs = performance.now() - started;

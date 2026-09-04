@@ -1,33 +1,190 @@
 {
   "meta": {
     "source": "fixtures/ 9 个合成会话(宪法 VI:不使用真实历史数据)",
-    "note": "计划建议 30~50 问;实际 24 问(规模差异如实记录)。afterMs/beforeMs 供 A/B 模式绝对时间窗;afterDaysBack 供 C 模式工具(相对时间),以 2026-08-29 为基准日计算并留余量。",
-    "categories": ["keyword 直接关键词", "paraphrase 需改写对齐词汇", "time 时间窗", "nohit 期望诚实未命中"]
+    "note": "计划建议 30~50 问;实际 24 问(规模差异如实记录)。afterMs/beforeMs 供 A/B 模式绝对时间窗;C 模式工具只接受相对天数,由 harness 在运行时从 afterMs 换算(daysBackFrom),不在数据集里硬编码天数——硬编码会随真实时间推移漂移,导致边界会话被时间窗切掉。",
+    "categories": [
+      "keyword 直接关键词",
+      "paraphrase 需改写对齐词汇",
+      "time 时间窗",
+      "nohit 期望诚实未命中"
+    ]
   },
   "cases": [
-    { "id": "k01", "category": "keyword", "question": "FTS5 是什么?", "rewritten": "FTS5", "expectedSessionKey": "claude-cli:sess-001" },
-    { "id": "k02", "category": "keyword", "question": "它和 LIKE 有什么区别?", "rewritten": "LIKE", "expectedSessionKey": "claude-cli:sess-001" },
-    { "id": "k03", "category": "keyword", "question": "增量索引的算法怎么写?", "rewritten": "增量索引", "expectedSessionKey": "codex:roll-abc-111" },
-    { "id": "k04", "category": "keyword", "question": "MCP 的三个原语是什么?", "rewritten": "MCP", "expectedSessionKey": "codex:roll-abc-222" },
-    { "id": "k05", "category": "keyword", "question": "size+mtime 判定是否需要重新解析", "rewritten": "size+mtime", "expectedSessionKey": "codex:roll-abc-111" },
-    { "id": "k06", "category": "keyword", "question": "这行前有 BOM 也要能解析", "rewritten": "BOM", "expectedSessionKey": "claude-cli:sess-005" },
-    { "id": "k07", "category": "keyword", "question": "崩溃前的正常第一行", "rewritten": "崩溃", "expectedSessionKey": "claude-cli:sess-004" },
-    { "id": "k08", "category": "keyword", "question": "只有 user/assistant 入消息", "rewritten": "user/assistant", "expectedSessionKey": "claude-cli:sess-006" },
-    { "id": "k09", "category": "keyword", "question": "这一行是正常的", "rewritten": "这一行是正常的", "expectedSessionKey": "codex:roll-abc-333" },
-    { "id": "k10", "category": "keyword", "question": "帮我理解增量索引和 WAL 并发", "rewritten": "WAL 并发", "expectedSessionKey": "claude-cli:sess-002" },
-    { "id": "p01", "category": "paraphrase", "question": "怎么让读写互不阻塞", "rewritten": "WAL", "expectedSessionKey": "claude-cli:sess-002" },
-    { "id": "p02", "category": "paraphrase", "question": "避免每次都重新解析全部文件", "rewritten": "增量索引", "expectedSessionKey": "codex:roll-abc-111" },
-    { "id": "p03", "category": "paraphrase", "question": "想在文本里搜关键词用什么模块", "rewritten": "全文检索", "expectedSessionKey": "claude-cli:sess-001" },
-    { "id": "p04", "category": "paraphrase", "question": "文件开头多了隐藏字符怎么处理", "rewritten": "BOM", "expectedSessionKey": "claude-cli:sess-005" },
-    { "id": "p05", "category": "paraphrase", "question": "会话文件写一半崩了会怎样", "rewritten": "崩溃", "expectedSessionKey": "claude-cli:sess-004" },
-    { "id": "p06", "category": "paraphrase", "question": "第三方助手 workbuddy 聊过什么", "rewritten": "workbuddy", "expectedSessionKey": "workbuddy-cli:session-a" },
-    { "id": "t01", "category": "time", "question": "2026 年 8 月初的 FTS5 讨论", "rewritten": "FTS5", "afterMs": 1785542400000, "beforeMs": 1786060800000, "afterDaysBack": 32, "expectedSessionKey": "claude-cli:sess-001" },
-    { "id": "t02", "category": "time", "question": "2025 年 8 月的增量索引讨论", "rewritten": "增量索引", "afterMs": 1753996800000, "beforeMs": 1756588800000, "afterDaysBack": 400, "expectedSessionKey": "codex:roll-abc-111" },
-    { "id": "t03", "category": "time", "question": "2026 年 8 月上旬 BOM 的处理", "rewritten": "BOM", "afterMs": 1785888000000, "beforeMs": 1786233600000, "afterDaysBack": 28, "expectedSessionKey": "claude-cli:sess-005" },
-    { "id": "t04", "category": "time", "question": "2025 年的 MCP 原语记录", "rewritten": "MCP", "afterMs": 1754083200000, "beforeMs": 1756675200000, "afterDaysBack": 400, "expectedSessionKey": "codex:roll-abc-222" },
-    { "id": "n01", "category": "nohit", "question": "Kubernetes 部署记录", "rewritten": "Kubernetes", "expectedSessionKey": null },
-    { "id": "n02", "category": "nohit", "question": "关于 Docker 的会话", "rewritten": "Docker", "expectedSessionKey": null },
-    { "id": "n03", "category": "nohit", "question": "LangChain 的讨论", "rewritten": "LangChain", "expectedSessionKey": null },
-    { "id": "n04", "category": "nohit", "question": "git rebase 的坑", "rewritten": "rebase", "expectedSessionKey": null }
+    {
+      "id": "k01",
+      "category": "keyword",
+      "question": "FTS5 是什么?",
+      "rewritten": "FTS5",
+      "expectedSessionKey": "claude-cli:sess-001"
+    },
+    {
+      "id": "k02",
+      "category": "keyword",
+      "question": "它和 LIKE 有什么区别?",
+      "rewritten": "LIKE",
+      "expectedSessionKey": "claude-cli:sess-001"
+    },
+    {
+      "id": "k03",
+      "category": "keyword",
+      "question": "增量索引的算法怎么写?",
+      "rewritten": "增量索引",
+      "expectedSessionKey": "codex:roll-abc-111"
+    },
+    {
+      "id": "k04",
+      "category": "keyword",
+      "question": "MCP 的三个原语是什么?",
+      "rewritten": "MCP",
+      "expectedSessionKey": "codex:roll-abc-222"
+    },
+    {
+      "id": "k05",
+      "category": "keyword",
+      "question": "size+mtime 判定是否需要重新解析",
+      "rewritten": "size+mtime",
+      "expectedSessionKey": "codex:roll-abc-111"
+    },
+    {
+      "id": "k06",
+      "category": "keyword",
+      "question": "这行前有 BOM 也要能解析",
+      "rewritten": "BOM",
+      "expectedSessionKey": "claude-cli:sess-005"
+    },
+    {
+      "id": "k07",
+      "category": "keyword",
+      "question": "崩溃前的正常第一行",
+      "rewritten": "崩溃",
+      "expectedSessionKey": "claude-cli:sess-004"
+    },
+    {
+      "id": "k08",
+      "category": "keyword",
+      "question": "只有 user/assistant 入消息",
+      "rewritten": "user/assistant",
+      "expectedSessionKey": "claude-cli:sess-006"
+    },
+    {
+      "id": "k09",
+      "category": "keyword",
+      "question": "这一行是正常的",
+      "rewritten": "这一行是正常的",
+      "expectedSessionKey": "codex:roll-abc-333"
+    },
+    {
+      "id": "k10",
+      "category": "keyword",
+      "question": "帮我理解增量索引和 WAL 并发",
+      "rewritten": "WAL 并发",
+      "expectedSessionKey": "claude-cli:sess-002"
+    },
+    {
+      "id": "p01",
+      "category": "paraphrase",
+      "question": "怎么让读写互不阻塞",
+      "rewritten": "WAL",
+      "expectedSessionKey": "claude-cli:sess-002"
+    },
+    {
+      "id": "p02",
+      "category": "paraphrase",
+      "question": "避免每次都重新解析全部文件",
+      "rewritten": "增量索引",
+      "expectedSessionKey": "codex:roll-abc-111"
+    },
+    {
+      "id": "p03",
+      "category": "paraphrase",
+      "question": "想在文本里搜关键词用什么模块",
+      "rewritten": "全文检索",
+      "expectedSessionKey": "claude-cli:sess-001"
+    },
+    {
+      "id": "p04",
+      "category": "paraphrase",
+      "question": "文件开头多了隐藏字符怎么处理",
+      "rewritten": "BOM",
+      "expectedSessionKey": "claude-cli:sess-005"
+    },
+    {
+      "id": "p05",
+      "category": "paraphrase",
+      "question": "会话文件写一半崩了会怎样",
+      "rewritten": "崩溃",
+      "expectedSessionKey": "claude-cli:sess-004"
+    },
+    {
+      "id": "p06",
+      "category": "paraphrase",
+      "question": "第三方助手 workbuddy 聊过什么",
+      "rewritten": "workbuddy",
+      "expectedSessionKey": "workbuddy-cli:session-a"
+    },
+    {
+      "id": "t01",
+      "category": "time",
+      "question": "2026 年 8 月初的 FTS5 讨论",
+      "rewritten": "FTS5",
+      "afterMs": 1785542400000,
+      "beforeMs": 1786060800000,
+      "expectedSessionKey": "claude-cli:sess-001"
+    },
+    {
+      "id": "t02",
+      "category": "time",
+      "question": "2025 年 8 月的增量索引讨论",
+      "rewritten": "增量索引",
+      "afterMs": 1753996800000,
+      "beforeMs": 1756588800000,
+      "expectedSessionKey": "codex:roll-abc-111"
+    },
+    {
+      "id": "t03",
+      "category": "time",
+      "question": "2026 年 8 月上旬 BOM 的处理",
+      "rewritten": "BOM",
+      "afterMs": 1785888000000,
+      "beforeMs": 1786233600000,
+      "expectedSessionKey": "claude-cli:sess-005"
+    },
+    {
+      "id": "t04",
+      "category": "time",
+      "question": "2025 年的 MCP 原语记录",
+      "rewritten": "MCP",
+      "afterMs": 1754083200000,
+      "beforeMs": 1756675200000,
+      "expectedSessionKey": "codex:roll-abc-222"
+    },
+    {
+      "id": "n01",
+      "category": "nohit",
+      "question": "Kubernetes 部署记录",
+      "rewritten": "Kubernetes",
+      "expectedSessionKey": null
+    },
+    {
+      "id": "n02",
+      "category": "nohit",
+      "question": "关于 Docker 的会话",
+      "rewritten": "Docker",
+      "expectedSessionKey": null
+    },
+    {
+      "id": "n03",
+      "category": "nohit",
+      "question": "LangChain 的讨论",
+      "rewritten": "LangChain",
+      "expectedSessionKey": null
+    },
+    {
+      "id": "n04",
+      "category": "nohit",
+      "question": "git rebase 的坑",
+      "rewritten": "rebase",
+      "expectedSessionKey": null
+    }
   ]
 }

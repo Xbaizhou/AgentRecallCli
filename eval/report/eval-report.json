@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30T12:40:59.619Z",
+  "generatedAt": "2026-09-04T01:32:09.537Z",
   "datasetSize": 24,
   "modes": [
     {
@@ -8,7 +8,7 @@
       "mrr": 0.5,
       "avgToolCalls": 0,
       "avgTokens": 0,
-      "avgLatencyMs": 0.1121500000000329,
+      "avgLatencyMs": 0.16672500000001378,
       "honestNoHit": 1,
       "perCase": [
         {
@@ -21,7 +21,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.6085999999997966,
+          "latencyMs": 0.9312999999999647,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -36,7 +36,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.21119999999996253,
+          "latencyMs": 0.39370000000008076,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -51,7 +51,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.13840000000004693,
+          "latencyMs": 0.3321000000000822,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -66,7 +66,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.12349999999992178,
+          "latencyMs": 0.16290000000003602,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -81,7 +81,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.1735999999998512,
+          "latencyMs": 0.18299999999999272,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -96,7 +96,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.12940000000003238,
+          "latencyMs": 0.17059999999992215,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -111,7 +111,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.09539999999992688,
+          "latencyMs": 0.12740000000007967,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -126,7 +126,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.12910000000010768,
+          "latencyMs": 0.19010000000002947,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -141,7 +141,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.0944000000001779,
+          "latencyMs": 0.20090000000004693,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -156,7 +156,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.14160000000015316,
+          "latencyMs": 0.22759999999993852,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -169,7 +169,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.08169999999995525,
+          "latencyMs": 0.0944000000001779,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -182,7 +182,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.0625,
+          "latencyMs": 0.17869999999993524,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -195,7 +195,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.06310000000007676,
+          "latencyMs": 0.10370000000011714,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -208,7 +208,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.06300000000010186,
+          "latencyMs": 0.07300000000009277,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -221,7 +221,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.07580000000007203,
+          "latencyMs": 0.06639999999993051,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -234,7 +234,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.0625999999999749,
+          "latencyMs": 0.08459999999990941,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -247,7 +247,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.06709999999998217,
+          "latencyMs": 0.08570000000008804,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -260,7 +260,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.05660000000011678,
+          "latencyMs": 0.05870000000004438,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -273,7 +273,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.044700000000148066,
+          "latencyMs": 0.04359999999996944,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -286,7 +286,7 @@
             "rank": 0
           },
           "hasExpectation": true,
-          "latencyMs": 0.04510000000004766,
+          "latencyMs": 0.04839999999990141,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -299,7 +299,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.05590000000006512,
+          "latencyMs": 0.061599999999998545,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -312,7 +312,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.05050000000005639,
+          "latencyMs": 0.07169999999996435,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -325,7 +325,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.06730000000015934,
+          "latencyMs": 0.057400000000143336,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -338,7 +338,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.05050000000005639,
+          "latencyMs": 0.05389999999988504,
           "toolCalls": 0,
           "tokens": 0,
           "honest": true
@@ -351,7 +351,7 @@
       "mrr": 0.9,
       "avgToolCalls": 1,
       "avgTokens": 15,
-      "avgLatencyMs": 0.10740833333336279,
+      "avgLatencyMs": 0.10988333333333837,
       "honestNoHit": 1,
       "perCase": [
         {
@@ -364,7 +364,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.2807999999999993,
+          "latencyMs": 0.28270000000020445,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -379,7 +379,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.14500000000020918,
+          "latencyMs": 0.14620000000013533,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -395,7 +395,7 @@
             "rank": 2
           },
           "hasExpectation": true,
-          "latencyMs": 0.13560000000006767,
+          "latencyMs": 0.14899999999988722,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -410,7 +410,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.0969000000000051,
+          "latencyMs": 0.11089999999990141,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -426,7 +426,7 @@
             "rank": 2
           },
           "hasExpectation": true,
-          "latencyMs": 0.13999999999987267,
+          "latencyMs": 0.12229999999999563,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -441,7 +441,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.08230000000003201,
+          "latencyMs": 0.09740000000010696,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -456,7 +456,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.09549999999990177,
+          "latencyMs": 0.08420000000000982,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -471,7 +471,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.13610000000016953,
+          "latencyMs": 0.15430000000014843,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -486,7 +486,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.12390000000004875,
+          "latencyMs": 0.1271999999999025,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -501,7 +501,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.15219999999999345,
+          "latencyMs": 0.13289999999983593,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -516,7 +516,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.12229999999999563,
+          "latencyMs": 0.10819999999989705,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -532,7 +532,7 @@
             "rank": 2
           },
           "hasExpectation": true,
-          "latencyMs": 0.11509999999998399,
+          "latencyMs": 0.1346000000000913,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -547,7 +547,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.10210000000006403,
+          "latencyMs": 0.09969999999998436,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -562,7 +562,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.07670000000007349,
+          "latencyMs": 0.08300000000008367,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -577,7 +577,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.06310000000007676,
+          "latencyMs": 0.06190000000015061,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -593,7 +593,7 @@
             "rank": 2
           },
           "hasExpectation": true,
-          "latencyMs": 0.11930000000006658,
+          "latencyMs": 0.13139999999998508,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -608,7 +608,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.07949999999982538,
+          "latencyMs": 0.098700000000008,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -623,7 +623,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.0806999999999789,
+          "latencyMs": 0.0887000000000171,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -638,7 +638,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.07190000000014152,
+          "latencyMs": 0.060899999999946886,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -653,7 +653,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.0965000000001055,
+          "latencyMs": 0.07609999999999673,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -666,7 +666,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.07680000000004839,
+          "latencyMs": 0.09789999999998145,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -679,7 +679,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.06610000000000582,
+          "latencyMs": 0.07109999999988759,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -692,7 +692,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.06289999999989959,
+          "latencyMs": 0.05829999999991742,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -705,7 +705,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.05650000000014188,
+          "latencyMs": 0.05960000000004584,
           "toolCalls": 1,
           "tokens": 15,
           "honest": true
@@ -718,7 +718,7 @@
       "mrr": 1,
       "avgToolCalls": 1,
       "avgTokens": 30,
-      "avgLatencyMs": 0.3130083333333289,
+      "avgLatencyMs": 0.35341249999999036,
       "honestNoHit": 1,
       "perCase": [
         {
@@ -731,7 +731,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 2.72219999999993,
+          "latencyMs": 3.313899999999876,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -746,7 +746,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.2738000000001648,
+          "latencyMs": 0.33199999999987995,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -761,7 +761,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.26710000000002765,
+          "latencyMs": 0.4559999999999036,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -776,7 +776,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.255500000000211,
+          "latencyMs": 0.32399999999984175,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -791,7 +791,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.2878000000000611,
+          "latencyMs": 0.2941000000000713,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -806,7 +806,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.22249999999985448,
+          "latencyMs": 0.18830000000002656,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -821,7 +821,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.16069999999990614,
+          "latencyMs": 0.13580000000001746,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -836,7 +836,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.22019999999997708,
+          "latencyMs": 0.23390000000017608,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -851,7 +851,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.25489999999990687,
+          "latencyMs": 0.31899999999996,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -866,7 +866,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.19319999999993342,
+          "latencyMs": 0.2035000000000764,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -881,7 +881,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.1691000000000713,
+          "latencyMs": 0.23870000000010805,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -896,7 +896,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.14400000000000546,
+          "latencyMs": 0.1776999999999589,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -911,7 +911,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.12760000000002947,
+          "latencyMs": 0.14589999999998327,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -926,7 +926,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.18140000000016698,
+          "latencyMs": 0.11599999999998545,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -941,7 +941,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.1696999999999207,
+          "latencyMs": 0.09789999999998145,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -956,7 +956,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.21100000000001273,
+          "latencyMs": 0.17599999999993088,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -971,7 +971,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.5446999999999207,
+          "latencyMs": 0.514699999999948,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -986,7 +986,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.2584999999999127,
+          "latencyMs": 0.18059999999991305,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -1001,7 +1001,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.18469999999979336,
+          "latencyMs": 0.24320000000011532,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -1016,7 +1016,7 @@
             "rank": 1
           },
           "hasExpectation": true,
-          "latencyMs": 0.16219999999998436,
+          "latencyMs": 0.2380000000000564,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -1029,7 +1029,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.12370000000009895,
+          "latencyMs": 0.1610000000000582,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -1042,7 +1042,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.11760000000003856,
+          "latencyMs": 0.1534999999998945,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -1055,7 +1055,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.14769999999998618,
+          "latencyMs": 0.13879999999994652,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
@@ -1068,7 +1068,7 @@
             "rank": 0
           },
           "hasExpectation": false,
-          "latencyMs": 0.11239999999997963,
+          "latencyMs": 0.09940000000005966,
           "toolCalls": 1,
           "tokens": 30,
           "honest": true
